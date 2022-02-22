@@ -7,6 +7,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef widgetRef) {
+    widgetRef.read(setStartWith(false));
     return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -25,11 +26,13 @@ class HomeScreen extends ConsumerWidget {
                         });
                   }),
                   const SizedBox(width: 10),
-                  // Text(
-                  //   state.startWithAi ? 'Started with AI' : 'Started with me',
-                  //   style: const TextStyle(
-                  //       fontSize: 20, fontWeight: FontWeight.bold),
-                  // )
+                  Text(
+                    widgetRef.watch(isAi)
+                        ? 'Started with AI'
+                        : 'Started with me',
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  )
                 ],
               ),
               SizedBox(
@@ -37,42 +40,74 @@ class HomeScreen extends ConsumerWidget {
                 height: 300,
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: GridView.count(crossAxisCount: 3, children: [
-                    ///
-                    for (int i = 0; i < 9; i++)
-                      Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Consumer(
-                          builder: (_, ref, __) {
-                            final _tiles = ref.watch(tiles);
-                            return OutlinedButton(
-                              /// onPressed
-                              // onPressed: () => bloc.onPressed(i),
-                              onPressed: () {},
+                  child: GridView.builder(
+                      itemCount: widgetRef.read(tiles.state).state.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3),
+                      itemBuilder: (context, i) {
+                        return Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: OutlinedButton(
+                            /// onPressed
+                            onPressed: () {
+                              widgetRef.read(onPressed(i));
+                            },
 
-                              ///
-                              child: Text(_tiles[i] == 0
-                                  ? ''
-                                  : _tiles[i] == 1
-                                      ? 'X'
-                                      : 'O'),
-                              style: OutlinedButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                elevation: 5,
-                                padding: EdgeInsets.zero,
-                                shadowColor: Colors.black26,
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 30),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
+                            ///
+                            child:
+                                Text(widgetRef.watch(tiles.state).state[i] == 0
+                                    ? ''
+                                    : widgetRef.watch(tiles.state).state[i] == 1
+                                        ? 'X'
+                                        : 'O'),
+                            style: OutlinedButton.styleFrom(
+                              primary: Colors.black,
+                              backgroundColor: Colors.white,
+                              elevation: 5,
+                              padding: EdgeInsets.zero,
+                              shadowColor: Colors.black26,
+                              textStyle: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 30),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                            );
-                          },
-                        ),
-                      )
-                  ]),
+                            ),
+                          ),
+                        );
+                      }),
+                  // child: GridView.count(crossAxisCount: 3, children: [
+                  //   ///
+                  //   for (int i = 0; i < 9; i++)
+                  //     Padding(
+                  //       padding: const EdgeInsets.all(5),
+                  //       child: OutlinedButton(
+                  //         /// onPressed
+                  //         onPressed: () {
+                  //           widgetRef.read(onPressed(i));
+                  //         },
+
+                  //         ///
+                  //         child: Text(widgetRef.watch(tiles.state).state[i] == 0
+                  //             ? ''
+                  //             : widgetRef.watch(tiles.state).state[i] == 1
+                  //                 ? 'X'
+                  //                 : 'O'),
+                  //         style: OutlinedButton.styleFrom(
+                  //           primary: Colors.black,
+                  //           backgroundColor: Colors.white,
+                  //           elevation: 5,
+                  //           padding: EdgeInsets.zero,
+                  //           shadowColor: Colors.black26,
+                  //           textStyle: const TextStyle(
+                  //               fontWeight: FontWeight.bold, fontSize: 30),
+                  //           shape: RoundedRectangleBorder(
+                  //             borderRadius: BorderRadius.circular(10),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     )
+                  // ]),
                 ),
               ),
 
