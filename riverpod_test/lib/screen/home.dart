@@ -19,10 +19,10 @@ class Home extends ConsumerWidget {
         child: Center(child: Consumer(builder: (_, ref, __) {
           /// It will watch a property that is specified in an object. won't watch other properties of an object.
           // final _data = ref.watch(providerData); // without title
-          final _data = ref
-              .watch(providerData('Remon Ahammad')); // with title. using method
+          // final _data = ref
+          //     .watch(providerData('Remon Ahammad')); // with title. using method
           return Text(
-            _data.toString(),
+            ' _data.toString()',
             style: const TextStyle(fontSize: 20),
           );
         })),
@@ -32,8 +32,8 @@ class Home extends ConsumerWidget {
         onPressed: () {
           /// increment
 
-          final _ref = widgetRef.read(countObject.state);
-          _ref.state = _ref.state.copyWith(counter: _ref.state.counter + 1);
+          // final _ref = widgetRef.read(countObject.state);
+          // _ref.state = _ref.state.copyWith(counter: _ref.state.counter + 1);
         },
       ),
     );

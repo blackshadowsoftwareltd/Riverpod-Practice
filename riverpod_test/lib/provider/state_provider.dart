@@ -1,26 +1,35 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Object class demo
-final countObject = StateProvider((ref) => ObjectClass(counter: 0, result: 0));
+// final countObject = StateProvider((ref) => ObjectClass(counter: 0, result: 0));
 
-class ObjectClass {
-  /// data type can be final
-  /// data type be late
-  final int counter;
-  final int result;
+final tiles = StateProvider((ref) {
+  late List<int> _tiles;
+  _tiles = List.filled(9, 0);
+  return _tiles;
+});
 
-  ObjectClass({
-    required this.counter,
-    required this.result,
-  });
+final isAi = StateProvider((ref) => false);
 
-  ObjectClass copyWith({
-    int? counter,
-    int? result,
+final setStartWith =
+    StateProvider.family<TicTacToeModel, bool>((ref, startWithAi) {
+  final _tiles = ref.read(tiles);
+  return TicTacToeModel(tiles: _tiles, startWithAi: startWithAi);
+});
+
+class TicTacToeModel {
+  final List<int> tiles;
+  final bool startWithAi;
+
+  TicTacToeModel({required this.tiles, required this.startWithAi});
+
+  TicTacToeModel copyWith({
+    List<int>? tiles,
+    bool? startWithAi,
   }) {
-    return ObjectClass(
-      counter: counter ?? this.counter,
-      result: result ?? this.result,
+    return TicTacToeModel(
+      tiles: tiles ?? this.tiles,
+      startWithAi: startWithAi ?? this.startWithAi,
     );
   }
 }
