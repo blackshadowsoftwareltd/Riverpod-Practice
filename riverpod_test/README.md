@@ -1,6 +1,4 @@
-# reverpod_test
-
-A new Flutter project.
+# Tic Tac T
 
 ## Getting Started
 
