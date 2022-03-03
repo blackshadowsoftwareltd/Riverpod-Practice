@@ -1,5 +1,5 @@
 {
-    "name": "riverpod_api",
+    "name": "API With AsyncValue",
     "short_name": "riverpod_api",
     "start_url": ".",
     "display": "standalone",
