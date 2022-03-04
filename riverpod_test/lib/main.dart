@@ -8,7 +8,7 @@ void main() => runApp(
       /// It must be declared in the root
       const ProviderScope(
         child: MaterialApp(
-          home: HomeScreen(),
+          home: Home(),
         ),
       ),
     );
