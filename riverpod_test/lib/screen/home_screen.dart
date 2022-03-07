@@ -44,100 +44,106 @@ class Home extends ConsumerWidget {
                       final _data = widgetRef.watch(tiles.state).state;
                       return Padding(
                         padding: const EdgeInsets.all(5),
-                        child: OutlinedButton(
-                          onPressed: widgetRef
-                                      .read(tiles.state)
-                                      .state
-                                      .tiles[index] ==
-                                  0
-                              ? () {
-                                  final _tileRef = widgetRef.read(tiles.state);
-                                  List<int> _list = _tileRef.state.tiles;
-                                  _list[index] = 1;
-                                  _tileRef.state =
-                                      _tileRef.state.copyWith(tiles: _list);
-                                  // List<int> _list =
-                                  //     widgetRef.read(tiles.state).state;
-                                  // _list[i] = 1;
-                                  // widgetRef.read(tiles.state).state = _list;
+                        child: Consumer(
+                          builder: (_, _aiRef, __) => OutlinedButton(
+                            onPressed: widgetRef
+                                        .read(tiles.state)
+                                        .state
+                                        .tiles[index] ==
+                                    0
+                                ? () {
+                                    final _tileRef =
+                                        widgetRef.read(tiles.state);
+                                    List<int> _list = _tileRef.state.tiles;
+                                    _list[index] = 1;
+                                    _tileRef.state =
+                                        _tileRef.state.copyWith(tiles: _list);
 
-                                  // runAi();
-                                }
-                              : null,
-                          style: OutlinedButton.styleFrom(
-                              primary: Colors.black,
-                              backgroundColor: Colors.white,
-                              elevation: 5,
-                              padding: EdgeInsets.zero,
-                              shadowColor: Colors.black26,
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 30),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10))),
-                          child: Consumer(
-                            builder: (_, ref, __) {
-                              final _data = ref
-                                  .watch(tiles.select((value) => value.tiles));
+                                    runAi(ref: _aiRef);
+                                  }
+                                : null,
+                            style: OutlinedButton.styleFrom(
+                                primary: Colors.black,
+                                backgroundColor: Colors.white,
+                                elevation: 5,
+                                padding: EdgeInsets.zero,
+                                shadowColor: Colors.black26,
+                                textStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 30),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            child: Consumer(
+                              builder: (_, ref, __) {
+                                final _data = ref.watch(
+                                    tiles.select((value) => value.tiles));
 
-                              return Text(_data[index] == 0
-                                  ? ''
-                                  : ref.watch(tiles.select(
-                                              (value) => value.tiles))[index] ==
-                                          1
-                                      ? 'X'
-                                      : 'O');
-                            },
+                                return Text(_data[index] == 0
+                                    ? ''
+                                    : ref.watch(tiles.select((value) =>
+                                                value.tiles))[index] ==
+                                            1
+                                        ? 'X'
+                                        : 'O');
+                              },
+                            ),
                           ),
                         ),
                       );
                     }),
               ),
             ),
-            // Text(
-            //     isWin(1, tiles)
-            //         ? 'You won!'
-            //         : isWin(2, tiles)
-            //             ? 'You lost!'
-            //             : 'Your move',
-            //     style:
-            //         const TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-            // OutlinedButton(
-            //     onPressed: () {
-            //       widgetRef.read(tiles(null));
-            //     },
-            //     child: const Text('Restart'))
+            Text(
+                isWin(1, widgetRef.watch(tiles.select((value) => value.tiles)))
+                    ? 'You won!'
+                    : isWin(
+                            2,
+                            widgetRef
+                                .watch(tiles.select((value) => value.tiles)))
+                        ? 'You lost!'
+                        : 'Your move',
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+            OutlinedButton(
+                onPressed: () {
+                  final _ref = widgetRef.read(tiles.state);
+                  _ref.state =
+                      TicTacList(tiles: List.generate(9, (index) => 0));
+                },
+                child: const Text('Restart'))
           ],
         ),
       ),
     );
   }
 
-  // void runAi() async {
-  //   await Future.delayed(const Duration(milliseconds: 500));
-  //   int? winning;
-  //   int? blocking;
-  //   int? normal;
-  //   for (int i = 0; i < 9; i++) {
-  //     int val = tiles[i];
-  //     if (val > 0) {
-  //       continue;
-  //     }
-  //     List<int> future = [...tiles]..[i] = 2;
-  //     if (isWinning(2, future)) {
-  //       winning = i;
-  //     }
-  //     future[i] = 1;
-  //     if (isWinning(1, future)) {
-  //       blocking = i;
-  //     }
-  //     normal = i;
-  //   }
-  //   final move = winning ?? blocking ?? normal;
-  //   if (move != null) {
-  //     tiles[move] = 2;
-  //     // setState(() {});
-  //   }
-  // }
+  void runAi({required WidgetRef ref}) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    final _aiRef = ref.read(tiles.state);
+    int? winning;
+    int? blocking;
+    int? normal;
+    for (int i = 0; i < 9; i++) {
+      int val = _aiRef.state.tiles[i];
+      if (val > 0) {
+        continue;
+      }
+      List<int> future = [..._aiRef.state.tiles]..[i] = 2;
+      if (isWin(2, future)) {
+        winning = i;
+      }
+      future[i] = 1;
+      if (isWin(1, future)) {
+        blocking = i;
+      }
+      normal = i;
+    }
+    final move = winning ?? blocking ?? normal;
+    if (move != null) {
+      List<int> _list = _aiRef.state.tiles;
+      _list[move] = 2;
+      _aiRef.state.copyWith(tiles: _list);
+    }
+  }
 }
 
 // class HomeScreen extends ConsumerWidget {

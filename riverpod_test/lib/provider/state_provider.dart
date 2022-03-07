@@ -12,18 +12,18 @@ final isWinning = StateProvider.family((ref, bool? value) => value ?? false);
 
 bool isWin(int who, List<int> tiles) {
   late bool _data;
-  final letsWin = StateProvider((ref) {
-    _data = (tiles[0] == who && tiles[1] == who && tiles[2] == who) ||
-        (tiles[3] == who && tiles[4] == who && tiles[5] == who) ||
-        (tiles[6] == who && tiles[7] == who && tiles[8] == who) ||
-        (tiles[0] == who && tiles[4] == who && tiles[8] == who) ||
-        (tiles[2] == who && tiles[4] == who && tiles[6] == who) ||
-        (tiles[0] == who && tiles[3] == who && tiles[6] == who) ||
-        (tiles[1] == who && tiles[4] == who && tiles[7] == who) ||
-        (tiles[2] == who && tiles[5] == who && tiles[8] == who);
 
-    ref.read(isWinning(_data));
-  });
+  _data = (tiles[0] == who && tiles[1] == who && tiles[2] == who) ||
+      (tiles[3] == who && tiles[4] == who && tiles[5] == who) ||
+      (tiles[6] == who && tiles[7] == who && tiles[8] == who) ||
+      (tiles[0] == who && tiles[4] == who && tiles[8] == who) ||
+      (tiles[2] == who && tiles[4] == who && tiles[6] == who) ||
+      (tiles[0] == who && tiles[3] == who && tiles[6] == who) ||
+      (tiles[1] == who && tiles[4] == who && tiles[7] == who) ||
+      (tiles[2] == who && tiles[5] == who && tiles[8] == who);
+
+  isWinning(_data);
+
   return _data;
 }
 
