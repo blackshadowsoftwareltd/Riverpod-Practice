@@ -2,10 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final isAi = StateProvider((ref) => false);
 
-final tiles = StateProvider((ref) {
+final tiles = StateProvider<TicTacList>((ref) {
   final _list = List.generate(9, (index) => 0);
-  print('_list $_list');
-  return _list;
+
+  return TicTacList(tiles: _list);
 });
 
 final isWinning = StateProvider.family((ref, bool? value) => value ?? false);
@@ -29,7 +29,7 @@ bool isWin(int who, List<int> tiles) {
 
 final setStartWith =
     StateProvider.family<TicTacToeModel, bool>((ref, startWithAi) {
-  final _tiles = ref.read(tiles);
+  final _tiles = ref.read(tiles).tiles;
   return TicTacToeModel(tiles: _tiles, startWithAi: startWithAi);
 });
 
@@ -96,6 +96,19 @@ final setStartWith =
 //       (tiles[1] == who && tiles[4] == who && tiles[7] == who) ||
 //       (tiles[2] == who && tiles[5] == who && tiles[8] == who);
 // }
+class TicTacList {
+  final List<int> tiles;
+
+  TicTacList({required this.tiles});
+
+  TicTacList copyWith({
+    List<int>? tiles,
+  }) {
+    return TicTacList(
+      tiles: tiles ?? this.tiles,
+    );
+  }
+}
 
 class TicTacToeModel {
   final List<int> tiles;

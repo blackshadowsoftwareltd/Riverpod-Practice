@@ -9,13 +9,6 @@ class Home extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef widgetRef) {
     return Scaffold(
       backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        print(widgetRef.read(tiles.state).state);
-        List<int> _data = widgetRef.read(tiles.state).state;
-        _data[0] = 1;
-        widgetRef.read(tiles.state).state = _data;
-        print(widgetRef.read(tiles.state).state);
-      }),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -43,53 +36,61 @@ class Home extends ConsumerWidget {
               child: AspectRatio(
                 aspectRatio: 1,
                 child: GridView.builder(
-                    itemCount: widgetRef.read(tiles.state).state.length,
+                    itemCount: widgetRef.read(tiles.state).state.tiles.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3),
-                    itemBuilder: (context, i) {
+                    itemBuilder: (context, index) {
                       final _data = widgetRef.watch(tiles.state).state;
-                      return Text(_data[i].toString());
-                    }
-                    // Padding(
-                    //   padding: const EdgeInsets.all(5),
-                    //   child: OutlinedButton(
-                    //     onPressed: widgetRef.read(tiles.state).state[i] == 0
-                    //         ? () {
-                    //             List<int> _list =
-                    //                 widgetRef.read(tiles.state).state;
-                    //             _list[i] = 1;
-                    //             widgetRef.read(tiles.state).state = _list;
+                      return Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: OutlinedButton(
+                          onPressed: widgetRef
+                                      .read(tiles.state)
+                                      .state
+                                      .tiles[index] ==
+                                  0
+                              ? () {
+                                  final _tileRef = widgetRef.read(tiles.state);
+                                  List<int> _list = _tileRef.state.tiles;
+                                  _list[index] = 1;
+                                  _tileRef.state =
+                                      _tileRef.state.copyWith(tiles: _list);
+                                  // List<int> _list =
+                                  //     widgetRef.read(tiles.state).state;
+                                  // _list[i] = 1;
+                                  // widgetRef.read(tiles.state).state = _list;
 
-                    //             // runAi();
-                    //           }
-                    //         : null,
-                    //     style: OutlinedButton.styleFrom(
-                    //         primary: Colors.black,
-                    //         backgroundColor: Colors.white,
-                    //         elevation: 5,
-                    //         padding: EdgeInsets.zero,
-                    //         shadowColor: Colors.black26,
-                    //         textStyle: const TextStyle(
-                    //             fontWeight: FontWeight.bold, fontSize: 30),
-                    //         shape: RoundedRectangleBorder(
-                    //             borderRadius: BorderRadius.circular(10))),
-                    //     child: Consumer(
-                    //       builder: (_, ref, __) {
-                    //         final _data = ref.watch(tiles.state).state;
+                                  // runAi();
+                                }
+                              : null,
+                          style: OutlinedButton.styleFrom(
+                              primary: Colors.black,
+                              backgroundColor: Colors.white,
+                              elevation: 5,
+                              padding: EdgeInsets.zero,
+                              shadowColor: Colors.black26,
+                              textStyle: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 30),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          child: Consumer(
+                            builder: (_, ref, __) {
+                              final _data = ref
+                                  .watch(tiles.select((value) => value.tiles));
 
-                    //         return Text(_data[i].toString()
-                    //             // == 1
-                    //             //     ? ''
-                    //             //     : ref.watch(tiles.state).state[i] == 1
-                    //             //         ? 'X'
-                    //             //         : 'O'
-                    //             );
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
-                    ),
+                              return Text(_data[index] == 0
+                                  ? ''
+                                  : ref.watch(tiles.select(
+                                              (value) => value.tiles))[index] ==
+                                          1
+                                      ? 'X'
+                                      : 'O');
+                            },
+                          ),
+                        ),
+                      );
+                    }),
               ),
             ),
             // Text(
