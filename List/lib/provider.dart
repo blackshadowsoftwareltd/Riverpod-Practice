@@ -18,11 +18,10 @@ class ListNotifier extends StateNotifier<List<String>> {
 
   ///? update
   //! if it is a model type? use> newValue.copyWith(....)
-  void update(String old, String newValue) {
-    state = [
-      for (var x in state)
-        if (x == old) newValue else x
-    ];
+  void update(int index, String newValue) {
+    List<String> temp = [...state];
+    temp[index] = newValue;
+    state = [...temp];
   }
 
   ///? delete all
