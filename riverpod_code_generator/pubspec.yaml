@@ -1,0 +1,41 @@
+name: riverpod_code_generator
+description: A new Flutter project.
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+    # or flutter_riverpod/hooks_riverpod as per https://riverpod.dev/docs/getting_started
+  flutter_riverpod:
+  # the annotation package containing @riverpod
+  riverpod_annotation:  
+
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # a tool for running code generators
+  build_runner:
+  # the code generator
+  riverpod_generator:
+  # riverpod_lint makes it easier to work with Riverpod
+  riverpod_lint:
+  # import custom_lint too as riverpod_lint depends on it
+  custom_lint:
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+
+ 
