@@ -1,24 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_code_generator/modules/providers/notifiers/notifier.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show Consumer, ConsumerWidget, WidgetRef;
 
-import 'providers/futures/futures.dart';
-
-class Home extends StatelessWidget {
-  const Home({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Riverpod Code Generator'),
-      ),
-      body: const Column(
-        children: [FutureMethodExample(), CounterExample()],
-      ),
-    );
-  }
-}
+import '../../providers/notifiers/notifier.dart' show counterProvider;
 
 class CounterExample extends ConsumerWidget {
   const CounterExample({
@@ -55,17 +39,5 @@ class CounterExample extends ConsumerWidget {
         ),
       ),
     );
-  }
-}
-
-class FutureMethodExample extends ConsumerWidget {
-  const FutureMethodExample({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final nameData = ref.watch(getNameProvider(id: 1));
-    return Text(nameData.value ?? 'Loading...');
   }
 }
